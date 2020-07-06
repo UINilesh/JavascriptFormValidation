@@ -1,0 +1,125 @@
+<style>
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .error {
+    display: inline-block;
+    width: 100%;
+    text-align: left;
+    color: red;
+  }
+</style>
+<form method="post" action="#" name="registerform" id="registerform">
+  <input
+    type="text"
+    id="name"
+    name="name"
+    aria-describedby="name-format"
+    placeholder="Name"
+  />
+  <span class="error"><p id="name_error"></p></span>
+
+  <input type="text" id="email" name="email" placeholder="Email" />
+  <span class="error">
+    <p id="email_error"></p>
+    <p id="email_errorValid"></p>
+  </span>
+
+  <input
+    pattern="[1-9]{1}[0-9]{9}"
+    maxlength="10"
+    type="tel"
+    id="telephone"
+    name="telephone"
+    placeholder="Telephone"
+  />
+  <span class="error">
+    <p id="telephone_error"></p>
+    <p id="contactValid"></p>
+  </span>
+
+  <input
+    type="text"
+    id="city"
+    name="city"
+    aria-describedby="name-format"
+    placeholder="City"
+  />
+  <span class="error"><p id="city_error"></p></span>
+
+  <button class="register_button" type="submit" value="submit">
+    Submit
+  </button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+  document.getElementById("registerform").onsubmit = function () {
+    // email expression
+    var email = document.getElementById("email");
+    var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    var phoneNumber = 123456789;
+
+    var a = document.forms["registerform"]["name"].value;
+    var b = document.forms["registerform"]["email"].value;
+    var c = document.forms["registerform"]["telephone"].value;
+    var d = document.forms["registerform"]["city"].value;
+    var submit = true;
+
+    if (a == null || a == "") {
+      nameError = "Please enter your name";
+      document.getElementById("name_error").innerHTML = nameError;
+      submit = false;
+    }
+
+    if (b == null || b == "") {
+      emailerror = "Please enter email address";
+      document.getElementById("email_error").innerHTML = emailerror;
+      submit = false;
+    } else {
+      emailValiderror = "Please provide a valid email address";
+      if (!filter.test(email.value)) {
+        document.getElementById("email_errorValid").innerHTML = emailValiderror;
+        email.focus;
+        return false;
+      }
+    }
+
+    if (c == null || c == "") {
+      telephoneError = "Please enter your telephone";
+      $("#telephone")
+        .keypress(function (e) {
+          if (isNaN(this.value + "" + String.fromCharCode(e.charCode)))
+            return false;
+        })
+        .on("cut copy paste", function (e) {
+          e.preventDefault();
+        });
+      document.getElementById("telephone_error").innerHTML = telephoneError;
+
+      submit = false;
+    } else {
+      contactNumberError = "Please enter 10 digit numbers only";
+      if (phoneNumber.length == 10) {
+        document.getElementById("contactValid").innerHTML = contactNumberError;
+
+        return false;
+      }
+    }
+    if (d == null || d == "") {
+      cityerror = "Please enter city";
+      document.getElementById("city_error").innerHTML = cityerror;
+      submit = false;
+    }
+    return submit;
+  };
+
+  function removeWarning() {
+    document.getElementById(this.id + "_error").innerHTML = "";
+  }
+
+  document.getElementById("name").onkeyup = removeWarning;
+  document.getElementById("email").onkeyup = removeWarning;
+  document.getElementById("telephone").onkeyup = removeWarning;
+  document.getElementById("city").onkeyup = removeWarning;
+</script>
